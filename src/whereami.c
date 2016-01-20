@@ -26,6 +26,14 @@ extern "C" {
 #define WAI_REALLOC(p, size) realloc(p, size)
 #endif
 
+#if !defined(WAI_NOINLINE)
+#ifdef _MSC_VER
+#define WAI_NOINLINE __declspec(noinline)
+#elif defined(__GNUC__)
+#define WAI_NOINLINE __attribute__((noinline))
+#endif
+#endif
+
 #if defined(_WIN32)
 
 #define WIN32_LEAN_AND_MEAN
@@ -36,12 +44,6 @@ extern "C" {
 #include <intrin.h>
 #if defined(_MSC_VER)
 #pragma warning(pop)
-#endif
-
-#ifndef WAI_NOINLINE
-#ifdef _MSC_VER
-#define WAI_NOINLINE __declspec(noinline)
-#endif
 #endif
 
 static int WAI_PREFIX(getModulePath_)(HMODULE module, char* out, int capacity, int* dirname_length)
@@ -148,12 +150,6 @@ int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
 
 #if !defined(WAI_PROC_SELF_EXE)
 #define WAI_PROC_SELF_EXE "/proc/self/exe"
-#endif
-
-#ifndef WAI_NOINLINE
-#ifdef __GNUC__
-#define WAI_NOINLINE __attribute__((noinline))
-#endif
 #endif
 
 WAI_FUNCSPEC
@@ -326,12 +322,6 @@ int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
 #include <string.h>
 #include <dlfcn.h>
 
-#ifndef WAI_NOINLINE
-#ifdef __GNUC__
-#define WAI_NOINLINE __attribute__((noinline))
-#endif
-#endif
-
 WAI_FUNCSPEC
 int WAI_PREFIX(getExecutablePath)(char* out, int capacity, int* dirname_length)
 {
@@ -436,12 +426,6 @@ int WAI_PREFIX(getModulePath)(char* out, int capacity, int* dirname_length)
 #include <stdlib.h>
 #include <string.h>
 #include <dlfcn.h>
-
-#ifndef WAI_NOINLINE
-#ifdef __GNUC__
-#define WAI_NOINLINE __attribute__((noinline))
-#endif
-#endif
 
 #if !defined(WAI_PROC_SELF_EXE)
 #define WAI_PROC_SELF_EXE "/proc/self/exefile"
